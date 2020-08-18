@@ -6,6 +6,6 @@ import android.os.Bundle
 class Deneme : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_deneme)
+        setContentView(R.layout.activity_main)
     }
 }
