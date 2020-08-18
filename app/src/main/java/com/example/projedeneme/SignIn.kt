@@ -9,7 +9,6 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.activity_sign_in.*
 
 class SignIn : AppCompatActivity() {
@@ -45,7 +44,7 @@ class SignIn : AppCompatActivity() {
                         if(p0.isSuccessful){
 
                             Toast.makeText( this@SignIn,"Giriş Başarılı"+FirebaseAuth.getInstance().currentUser?.email,Toast.LENGTH_SHORT).show()
-                            var intentMain= Intent(this@SignIn,Deneme::class.java)
+                            var intentMain= Intent(this@SignIn,MainSc::class.java)
                             startActivity(intentMain)
                         }
                         else{

@@ -3,9 +3,9 @@ package com.example.projedeneme
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 
-class Deneme : AppCompatActivity() {
+class AddRoute : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_deneme)
+        setContentView(R.layout.activity_add_route)
     }
 }

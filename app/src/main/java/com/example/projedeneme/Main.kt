@@ -3,10 +3,7 @@ package com.example.projedeneme
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import kotlinx.android.synthetic.main.activity_sign_in.*
-import kotlinx.android.synthetic.main.activity_sign_in.imageView2
-import kotlinx.android.synthetic.main.activity_sign_up.*
-import kotlinx.android.synthetic.main.main.*
+import kotlinx.android.synthetic.main.activity_welcome.*
 
 class Main : AppCompatActivity() {
 
@@ -14,7 +11,7 @@ class Main : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.main)
+        setContentView(R.layout.activity_welcome)
 
         button.setOnClickListener()
         {
