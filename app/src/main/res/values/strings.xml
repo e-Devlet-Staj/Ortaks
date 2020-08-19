@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">ProjeDeneme</string>
     <string name="ho_geld_n_z">HOŞ GELDİNİZ !</string>
+    <string name="title_activity_add_route_map">Map</string>
 </resources>
