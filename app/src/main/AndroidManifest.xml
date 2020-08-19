@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".AddRoute"></activity>
-        <activity android:name=".Deneme" />
+        <activity android:name=".Main" />
         <activity android:name=".SignUp" />
         <activity android:name=".SignIn" />
         <activity
@@ -23,7 +23,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Main" />
+        <activity android:name=".Welcome" />
 
         <meta-data
             android:name="preloaded_fonts"

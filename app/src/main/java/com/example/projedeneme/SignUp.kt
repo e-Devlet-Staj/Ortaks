@@ -9,8 +9,6 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import kotlinx.android.synthetic.main.activity_sign_in.*
 import kotlinx.android.synthetic.main.activity_sign_in.button2
 import kotlinx.android.synthetic.main.activity_sign_in.imageView2
 import kotlinx.android.synthetic.main.activity_sign_in.textView7
@@ -24,7 +22,7 @@ class SignUp : AppCompatActivity() {
 
         imageView2.setOnClickListener()
         {
-            val intent = Intent(this, Main::class.java)
+            val intent = Intent(this, Welcome::class.java)
             startActivity(intent)
         }
         textView7.setOnClickListener()
