@@ -1,5 +1,7 @@
 package com.example.projedeneme
 
+import android.location.Address
+import android.location.Geocoder
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 
@@ -9,6 +11,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import kotlinx.android.synthetic.main.activity_add_route_map.*
 
 class AddRouteMap : AppCompatActivity(), OnMapReadyCallback {
 
@@ -39,5 +42,25 @@ class AddRouteMap : AppCompatActivity(), OnMapReadyCallback {
         val sydney = LatLng(-34.0, 151.0)
         mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+
+        buttonSearch.setOnClickListener {
+            var location=editTextMapSearchBar.text.toString()
+            var addressList : List<Address>?=null
+            var options = MarkerOptions()
+            if(location!=""){
+                var geocoder =Geocoder(this)
+
+                addressList= geocoder.getFromLocationName(location,5)
+                for(i in addressList!!.indices){
+                    var address = addressList[i]
+                    var latLng=LatLng(address.latitude,address.longitude)
+                    options.position(latLng)
+                    options.title("Aranan Konum")
+                    mMap!!.addMarker(options)
+                    mMap!!.animateCamera(CameraUpdateFactory.newLatLng(latLng))
+                }
+
+            }
+        }
     }
 }
