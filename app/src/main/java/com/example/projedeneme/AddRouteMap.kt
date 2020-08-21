@@ -2,6 +2,7 @@ package com.example.projedeneme
 
 import android.Manifest
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Address
 import android.location.Geocoder
@@ -11,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Looper
 import android.util.Log
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.*
@@ -21,16 +23,21 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import kotlinx.android.synthetic.main.activity_add_route.*
 import kotlinx.android.synthetic.main.activity_add_route_map.*
 
 class AddRouteMap : AppCompatActivity(), OnMapReadyCallback {
 
+
     private lateinit var mMap: GoogleMap
     lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     lateinit var locationRequest: LocationRequest
+
     val PERMISSION_ID = 1010
     var options = MarkerOptions()
+    var latLng = LatLng(2.3, 2.2)
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_route_map)
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -38,26 +45,43 @@ class AddRouteMap : AppCompatActivity(), OnMapReadyCallback {
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
-        Log.d("Debug:",CheckPermission().toString())
-        Log.d("Debug:",isLocationEnabled().toString())
+        Log.d("Debug:", CheckPermission().toString())
+        Log.d("Debug:", isLocationEnabled().toString())
         RequestPermission()
         getLastLocation()
+        buttonFinishSelection.setOnClickListener {
+            var intent = Intent(this, AddRoute::class.java)
+            intent.putExtra("latitude", "" + latLng.latitude)
+            intent.putExtra("longitude", "" + latLng.longitude)
+            startActivity(intent)
+        }
+
     }
+
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
-        
+        mMap.setOnMapClickListener(object : GoogleMap.OnMapClickListener {
+            override fun onMapClick(latlng: LatLng) {
+                // Clears the previously touched position
+                mMap.clear();
+                // Animating to the touched position
+                mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+
+                val touchedLocation = LatLng(latlng.latitude, latlng.longitude)
+                mMap.addMarker(MarkerOptions().position(touchedLocation))
+            }
+        })
         buttonSearch.setOnClickListener {
             var location = editTextMapSearchBar.text.toString()
             var addressList: List<Address>? = null
 
             if (location != "") {
                 var geocoder = Geocoder(this)
-
                 addressList = geocoder.getFromLocationName(location, 5)
                 for (i in addressList!!.indices) {
                     var address = addressList[i]
-                    var latLng = LatLng(address.latitude, address.longitude)
+                    latLng = LatLng(address.latitude, address.longitude)
                     options.position(latLng)
                     options.title("Aranan Konum")
                     mMap!!.addMarker(options)
@@ -66,21 +90,18 @@ class AddRouteMap : AppCompatActivity(), OnMapReadyCallback {
 
             }
         }
+
     }
 
     private fun CheckPermission(): Boolean {
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                android.Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED ||
-            ActivityCompat.checkSelfPermission(
-                this,
-                android.Manifest.permission.ACCESS_COARSE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
-        )
-            return true
-        else
-            return false
+        return ActivityCompat.checkSelfPermission(
+            this,
+            android.Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED ||
+                ActivityCompat.checkSelfPermission(
+                    this,
+                    android.Manifest.permission.ACCESS_COARSE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED
     }
 
     private fun RequestPermission() {
@@ -144,17 +165,18 @@ class AddRouteMap : AppCompatActivity(), OnMapReadyCallback {
                         options.position(latLng)
                         options.title("Aranan Konum")
                         mMap!!.addMarker(options)
-                        mMap!!.animateCamera(CameraUpdateFactory.newLatLng(latLng)) }
+                        mMap!!.animateCamera(CameraUpdateFactory.newLatLng(latLng))
                     }
                 }
-            } else {
-                Toast.makeText(this, "Please Turn on Your device Location", Toast.LENGTH_SHORT)
-                    .show()
             }
+        } else {
+            Toast.makeText(this, "Please Turn on Your device Location", Toast.LENGTH_SHORT)
+                .show()
         }
+    }
 
-    fun NewLocationData(){
-        var locationRequest =  LocationRequest()
+    fun NewLocationData() {
+        var locationRequest = LocationRequest()
         locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         locationRequest.interval = 0
         locationRequest.fastestInterval = 0
@@ -178,16 +200,16 @@ class AddRouteMap : AppCompatActivity(), OnMapReadyCallback {
             return
         }
         fusedLocationProviderClient!!.requestLocationUpdates(
-            locationRequest,locationCallback, Looper.myLooper()
+            locationRequest, locationCallback, Looper.myLooper()
         )
     }
 
 
-    private val locationCallback = object : LocationCallback(){
+    private val locationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult) {
 
             var lastLocation: Location = locationResult.lastLocation
-            Log.d("Debug:","your last last location: "+ lastLocation.longitude.toString())
-            }
+            Log.d("Debug:", "your last last location: " + lastLocation.longitude.toString())
+        }
     }
 }

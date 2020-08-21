@@ -18,7 +18,7 @@ class Main : AppCompatActivity() {
     }
 
     fun addRouteAct() {
-        val intent = Intent(this, AddRouteMap::class.java)
+        val intent = Intent(this, AddRoute::class.java)
         startActivity(intent)
     }
 }
