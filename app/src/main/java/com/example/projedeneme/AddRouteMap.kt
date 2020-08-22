@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
@@ -23,6 +24,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.PolylineOptions
 import kotlinx.android.synthetic.main.activity_add_route.*
 import kotlinx.android.synthetic.main.activity_add_route_map.*
 
@@ -35,6 +37,7 @@ class AddRouteMap : AppCompatActivity(), OnMapReadyCallback {
 
     val PERMISSION_ID = 1010
     var options = MarkerOptions()
+    var polyOptions=PolylineOptions()
     var latLng = LatLng(2.3, 2.2)
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -50,30 +53,42 @@ class AddRouteMap : AppCompatActivity(), OnMapReadyCallback {
         RequestPermission()
         getLastLocation()
         buttonFinishSelection.setOnClickListener {
-            var intent = Intent(this, AddRoute::class.java)
-            intent.putExtra("latitude", "" + latLng.latitude)
-            intent.putExtra("longitude", "" + latLng.longitude)
-            startActivity(intent)
+            var intent2 = Intent(this, AddRoute::class.java)
+            if(intent.extras?.getString("status").toString() == "From") {
+                intent2.putExtra("latitudeFrom", "" + latLng.latitude)
+                intent2.putExtra("longitudeFrom", "" + latLng.longitude)
+                Toast.makeText(this,intent.extras?.getString("status").toString(),Toast.LENGTH_LONG).show()
+            }
+            else if(intent.extras?.getString("status").equals("To")){
+                intent2.putExtra("latitudeTo", "" + latLng.latitude)
+                intent2.putExtra("longitudeTo", "" + latLng.longitude)
+                Toast.makeText(this,intent.extras?.getString("status").toString(),Toast.LENGTH_LONG).show()
+            }
+
+            startActivity(intent2)
         }
 
     }
 
 
     override fun onMapReady(googleMap: GoogleMap) {
+        polyOptions.color(Color.RED)
+        polyOptions.width(5f)
         mMap = googleMap
         mMap.setOnMapClickListener(object : GoogleMap.OnMapClickListener {
             override fun onMapClick(latlng: LatLng) {
                 // Clears the previously touched position
                 mMap.clear();
                 // Animating to the touched position
+                latLng = LatLng(latlng.latitude, latlng.longitude)
                 mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
 
-                val touchedLocation = LatLng(latlng.latitude, latlng.longitude)
-                mMap.addMarker(MarkerOptions().position(touchedLocation))
+
+                mMap.addMarker(MarkerOptions().position(latLng))
             }
         })
         buttonSearch.setOnClickListener {
-            var location = editTextMapSearchBar.text.toString()
+            val location = editTextMapSearchBar.text.toString()
             var addressList: List<Address>? = null
 
             if (location != "") {
@@ -83,6 +98,7 @@ class AddRouteMap : AppCompatActivity(), OnMapReadyCallback {
                     var address = addressList[i]
                     latLng = LatLng(address.latitude, address.longitude)
                     options.position(latLng)
+                    mMap.clear();
                     options.title("Aranan Konum")
                     mMap!!.addMarker(options)
                     mMap!!.animateCamera(CameraUpdateFactory.newLatLng(latLng))
@@ -161,7 +177,7 @@ class AddRouteMap : AppCompatActivity(), OnMapReadyCallback {
                         NewLocationData()
                     } else {
                         Log.d("Debug:", "Your Location:" + location.longitude)
-                        var latLng = LatLng(location.latitude, location.longitude)
+                        latLng = LatLng(location.latitude, location.longitude)
                         options.position(latLng)
                         options.title("Aranan Konum")
                         mMap!!.addMarker(options)
