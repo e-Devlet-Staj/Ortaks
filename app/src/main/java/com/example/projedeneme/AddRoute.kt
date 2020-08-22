@@ -7,6 +7,10 @@ import android.util.Log
 import kotlinx.android.synthetic.main.activity_add_route.*
 
 class AddRoute : AppCompatActivity() {
+    var latitudeTo:String=""
+    var latitudeFrom:String=""
+    var longitudeFrom:String = ""
+    var longitudeTo:String=""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_route)
