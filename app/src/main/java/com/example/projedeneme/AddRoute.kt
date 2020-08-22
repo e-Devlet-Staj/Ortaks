@@ -19,7 +19,7 @@ class AddRoute : AppCompatActivity() {
         val intent2 = Intent(this,AddRouteMap::class.java)
        // Log.e("log","lat-"+latitudeFrom.toString()+"lon-"+longitudeFrom.toString())
         intent2.putExtra("status","From")
-        startActivityForResult(intent2,1)
+        startActivity(intent2)
     }
         val latitudeTempFrom= intent.extras?.getString("latitudeFrom").toString()
         val longitudeTempFrom= intent.extras?.getString("longitudeFrom").toString()
@@ -35,7 +35,7 @@ class AddRoute : AppCompatActivity() {
         buttonTo.setOnClickListener {
            val intentTo = Intent(this, AddRouteMap::class.java)
             intentTo.putExtra("status","To")
-            startActivityForResult(intentTo,1)
+            startActivity(intentTo)
 
 
            // textViewFrom.setText("lat-"+latitudeTo+"lon-"+longitudeTo)
@@ -50,6 +50,8 @@ class AddRoute : AppCompatActivity() {
             longitudeTo=longitudeTempTo
         }
         buttonDrawRoute.setOnClickListener {
+            Log.e("log",latitudeFrom)
+            Log.e("log",latitudeTo)
 
 
         }
