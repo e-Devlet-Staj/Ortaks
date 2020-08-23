@@ -25,6 +25,12 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.database.ktx.getValue
+import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_add_route.*
 import kotlinx.android.synthetic.main.activity_add_route_map.*
 
@@ -34,12 +40,19 @@ class AddRouteMap : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
     lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     lateinit var locationRequest: LocationRequest
+    val database = Firebase.database
 
     val PERMISSION_ID = 1010
     var options = MarkerOptions()
-    var polyOptions=PolylineOptions()
+    var polyOptions = PolylineOptions()
     var latLng = LatLng(2.3, 2.2)
+    val latitudeFrom = database.getReference("latitudeFrom")
+    val latitudeTo = database.getReference("latitudeTo")
+    val longitudeFrom = database.getReference("longitudeFrom")
+    val longitudeTo = database.getReference("longitudeTo")
+
     override fun onCreate(savedInstanceState: Bundle?) {
+
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_route_map)
@@ -54,20 +67,42 @@ class AddRouteMap : AppCompatActivity(), OnMapReadyCallback {
         getLastLocation()
         buttonFinishSelection.setOnClickListener {
             var intent2 = Intent(this, AddRoute::class.java)
-            if(intent.extras?.getString("status").toString() == "From") {
+            if (intent.extras?.getString("status").toString() == "From") {
                 intent2.putExtra("latitudeFrom", "" + latLng.latitude)
                 intent2.putExtra("longitudeFrom", "" + latLng.longitude)
-                Toast.makeText(this,intent.extras?.getString("status").toString(),Toast.LENGTH_LONG).show()
-            }
-            else if(intent.extras?.getString("status").equals("To")){
+                Toast.makeText(
+                    this,
+                    intent.extras?.getString("status").toString(),
+                    Toast.LENGTH_LONG
+                ).show()
+            } else if (intent.extras?.getString("status").equals("To")) {
                 intent2.putExtra("latitudeTo", "" + latLng.latitude)
                 intent2.putExtra("longitudeTo", "" + latLng.longitude)
-                Toast.makeText(this,intent.extras?.getString("status").toString(),Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    this,
+                    intent.extras?.getString("status").toString(),
+                    Toast.LENGTH_LONG
+                ).show()
             }
 
             startActivity(intent2)
         }
+        latitudeFrom.database.getReference("")
+        latitudeFrom.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                val value = dataSnapshot.getValue<String>()
+                Log.d("kral", "Value is: $value")
+            }
 
+
+
+            override fun onCancelled(error: DatabaseError) {
+                // Failed to read value
+                Log.w("kral", "Failed to read value.", error.toException())
+            }
+        })
     }
 
 
@@ -228,4 +263,5 @@ class AddRouteMap : AppCompatActivity(), OnMapReadyCallback {
             Log.d("Debug:", "your last last location: " + lastLocation.longitude.toString())
         }
     }
+
 }
