@@ -68,41 +68,29 @@ class AddRouteMap : AppCompatActivity(), OnMapReadyCallback {
         buttonFinishSelection.setOnClickListener {
             var intent2 = Intent(this, AddRoute::class.java)
             if (intent.extras?.getString("status").toString() == "From") {
-                intent2.putExtra("latitudeFrom", "" + latLng.latitude)
-                intent2.putExtra("longitudeFrom", "" + latLng.longitude)
-                Toast.makeText(
-                    this,
-                    intent.extras?.getString("status").toString(),
-                    Toast.LENGTH_LONG
-                ).show()
+                latitudeFrom.setValue(latLng.latitude)
+                longitudeFrom.setValue(latLng.longitude)
             } else if (intent.extras?.getString("status").equals("To")) {
-                intent2.putExtra("latitudeTo", "" + latLng.latitude)
-                intent2.putExtra("longitudeTo", "" + latLng.longitude)
-                Toast.makeText(
-                    this,
-                    intent.extras?.getString("status").toString(),
-                    Toast.LENGTH_LONG
-                ).show()
+                latitudeTo.setValue(latLng.latitude)
+                longitudeTo.setValue(latLng.longitude)
             }
-
             startActivity(intent2)
+            finish()
         }
-        latitudeFrom.database.getReference("")
-        latitudeFrom.addValueEventListener(object : ValueEventListener {
+      /*  latitudeFrom.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
                 val value = dataSnapshot.getValue<String>()
-                Log.d("kral", "Value is: $value")
-            }
+            }*/
 
 
 
-            override fun onCancelled(error: DatabaseError) {
+            /*override fun onCancelled(error: DatabaseError) {
                 // Failed to read value
                 Log.w("kral", "Failed to read value.", error.toException())
             }
-        })
+        })*/
     }
 
 
