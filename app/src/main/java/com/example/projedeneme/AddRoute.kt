@@ -7,10 +7,6 @@ import android.util.Log
 import kotlinx.android.synthetic.main.activity_add_route.*
 
 class AddRoute : AppCompatActivity() {
-    var latitudeTo:String=""
-    var latitudeFrom:String=""
-    var longitudeFrom:String = ""
-    var longitudeTo:String=""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_route)
@@ -21,14 +17,6 @@ class AddRoute : AppCompatActivity() {
         intent2.putExtra("status","From")
         startActivity(intent2)
     }
-        val latitudeTempFrom= intent.extras?.getString("latitudeFrom").toString()
-        val longitudeTempFrom= intent.extras?.getString("longitudeFrom").toString()
-        if(latitudeTempFrom!=null){
-            latitudeFrom=latitudeTempFrom
-        }
-        if(longitudeTempFrom!=null){
-            longitudeFrom=longitudeTempFrom
-        }
 
 
 
@@ -41,18 +29,9 @@ class AddRoute : AppCompatActivity() {
            // textViewFrom.setText("lat-"+latitudeTo+"lon-"+longitudeTo)
 
         }
-        val latitudeTempTo= intent.extras?.getString("latitudeTo").toString()
-        val  longitudeTempTo= intent.extras?.getString("longitudeTo").toString()
-        if(latitudeTempTo!=null){
-            latitudeTo=latitudeTempTo
-        }
-        if(longitudeTempFrom!=null){
-            longitudeTo=longitudeTempTo
-        }
         buttonDrawRoute.setOnClickListener {
-            Log.e("log",latitudeFrom)
-            Log.e("log",latitudeTo)
-
+           intent=Intent(this,PolyActivity::class.java)
+            startActivity(intent)
 
         }
 

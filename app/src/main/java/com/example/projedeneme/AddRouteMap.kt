@@ -40,11 +40,10 @@ class AddRouteMap : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
     lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     lateinit var locationRequest: LocationRequest
-    val database = Firebase.database
+    private val database = Firebase.database
 
     val PERMISSION_ID = 1010
     var options = MarkerOptions()
-    var polyOptions = PolylineOptions()
     var latLng = LatLng(2.3, 2.2)
     val latitudeFrom = database.getReference("latitudeFrom")
     val latitudeTo = database.getReference("latitudeTo")
@@ -56,7 +55,6 @@ class AddRouteMap : AppCompatActivity(), OnMapReadyCallback {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_route_map)
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -95,8 +93,7 @@ class AddRouteMap : AppCompatActivity(), OnMapReadyCallback {
 
 
     override fun onMapReady(googleMap: GoogleMap) {
-        polyOptions.color(Color.RED)
-        polyOptions.width(5f)
+
         mMap = googleMap
         mMap.setOnMapClickListener(object : GoogleMap.OnMapClickListener {
             override fun onMapClick(latlng: LatLng) {
