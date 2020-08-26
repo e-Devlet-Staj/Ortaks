@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ViewRequests"></activity>
+        <activity android:name=".SelectedRequest"></activity>
+        <activity android:name=".ViewRequests" />
         <activity android:name=".SignUp" />
         <activity android:name=".SignIn" />
         <activity
@@ -22,7 +23,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Main"></activity>
+        <activity android:name=".Main" />
 
         <meta-data
             android:name="preloaded_fonts"

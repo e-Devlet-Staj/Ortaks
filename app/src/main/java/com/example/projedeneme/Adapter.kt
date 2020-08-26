@@ -1,13 +1,16 @@
 package com.example.projedeneme
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.ride_line_layout.view.*
 
-class Adapter(val rideList:List<Ride>,var clickListener: OnRideItemClickListener) : RecyclerView.Adapter<Adapter.RideViewHolder>(){
+class Adapter( rideListtemp:List<Ride>) : RecyclerView.Adapter<Adapter.RideViewHolder>(){
+    var rideList =rideListtemp
 
     override fun getItemCount(): Int {
        return rideList.size
@@ -23,11 +26,15 @@ class Adapter(val rideList:List<Ride>,var clickListener: OnRideItemClickListener
 
 
     override fun onBindViewHolder(holder: RideViewHolder, position: Int) {
-       // holder?.rideDestination?.text=rideList.get(position).destination
-       // holder?.rideFrom?.text=rideList.get(position).from
-       // holder?.rideDate?.text=rideList.get(position).date
-       // holder?.rideTime?.text=rideList.get(position).time
-        holder.initialize(rideList.get(position),clickListener)
+
+        var newRide=rideList.get(position)
+        holder?.setData(newRide,position)
+
+    /*   holder?.rideDestination?.text=rideList.get(position).destination
+        holder?.rideFrom?.text=rideList.get(position).from
+        holder?.rideDate?.text=rideList.get(position).date
+        holder?.rideTime?.text=rideList.get(position).time*/
+
 
     }
 
@@ -39,22 +46,27 @@ class Adapter(val rideList:List<Ride>,var clickListener: OnRideItemClickListener
             var rideDate=rideLine.date_text
             var rideTime= rideLine.time_text
 
+        fun setData(CreatedRide : Ride, position: Int){
+            rideDestination.text=CreatedRide.destination
+            rideFrom.text=CreatedRide.from
+            rideDate.text=CreatedRide.date
+            rideTime.text=CreatedRide.time
 
-            fun initialize(item: Ride,action:OnRideItemClickListener) {
-                rideDestination.text=item.destination
-                rideFrom.text=item.from
-                rideDate.text=item.date
-                rideTime.text=item.time
 
-                itemView.setOnClickListener(){
-                    action.onItemClick(item,adapterPosition)
-                }
+            rideLine.setOnClickListener {v ->
+                var intent =Intent(v.context,SelectedRequest::class.java)
+                intent.putExtra("destination",CreatedRide.destination)
+                intent.putExtra("from",CreatedRide.from)
+                intent.putExtra("date",CreatedRide.date)
+                intent.putExtra("time",CreatedRide.time)
+                v.context.startActivity(intent)
+
+
+                   }
 
             }
-    }
 
-    interface OnRideItemClickListener{
-        fun onItemClick(item :Ride,position:Int)
-    }
+
+        }
 
 }
