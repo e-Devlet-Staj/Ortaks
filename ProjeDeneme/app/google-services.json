@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "761709877528",
+    "firebase_url": "https://ortaktaksi-7710d.firebaseio.com",
+    "project_id": "ortaktaksi-7710d",
+    "storage_bucket": "ortaktaksi-7710d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:761709877528:android:91551994fe7278d771666d",
+        "android_client_info": {
+          "package_name": "com.example.projedeneme"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "761709877528-klhinsd8koutfaeb6n3mncio8813ntaj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_cQXmOQjCiixucXICviEV1Ndi8GQR-uE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "761709877528-klhinsd8koutfaeb6n3mncio8813ntaj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
