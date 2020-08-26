@@ -22,6 +22,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
@@ -33,7 +34,10 @@ import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_add_route.*
 import kotlinx.android.synthetic.main.activity_add_route_map.*
-
+data class Customer(
+    var uid:String?=""
+    var
+)
 class AddRouteMap : AppCompatActivity(), OnMapReadyCallback {
 
 
@@ -75,20 +79,19 @@ class AddRouteMap : AppCompatActivity(), OnMapReadyCallback {
             startActivity(intent2)
             finish()
         }
-      /*  latitudeFrom.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                val value = dataSnapshot.getValue<String>()
-            }*/
+        /*  latitudeFrom.addValueEventListener(object : ValueEventListener {
+              override fun onDataChange(dataSnapshot: DataSnapshot) {
+                  // This method is called once with the initial value and again
+                  // whenever data at this location is updated.
+                  val value = dataSnapshot.getValue<String>()
+              }*/
 
 
-
-            /*override fun onCancelled(error: DatabaseError) {
-                // Failed to read value
-                Log.w("kral", "Failed to read value.", error.toException())
-            }
-        })*/
+        /*override fun onCancelled(error: DatabaseError) {
+            // Failed to read value
+            Log.w("kral", "Failed to read value.", error.toException())
+        }
+    })*/
     }
 
 
@@ -120,6 +123,7 @@ class AddRouteMap : AppCompatActivity(), OnMapReadyCallback {
                     options.position(latLng)
                     mMap.clear();
                     options.title("Aranan Konum")
+                    options.icon(BitmapDescriptorFactory.fromResource(R.drawable.redloc))
                     mMap!!.addMarker(options)
                     mMap!!.animateCamera(CameraUpdateFactory.newLatLng(latLng))
                 }
@@ -151,8 +155,6 @@ class AddRouteMap : AppCompatActivity(), OnMapReadyCallback {
     }
 
     fun isLocationEnabled(): Boolean {
-        //this function will return to us the state of the location service
-        //if the gps or the network provider is enabled then it will return true otherwise it will return false
         var locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
             LocationManager.NETWORK_PROVIDER
@@ -182,13 +184,6 @@ class AddRouteMap : AppCompatActivity(), OnMapReadyCallback {
                         Manifest.permission.ACCESS_COARSE_LOCATION
                     ) != PackageManager.PERMISSION_GRANTED
                 ) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
                     return
                 }
                 fusedLocationProviderClient.lastLocation.addOnCompleteListener { task ->
@@ -199,9 +194,10 @@ class AddRouteMap : AppCompatActivity(), OnMapReadyCallback {
                         Log.d("Debug:", "Your Location:" + location.longitude)
                         latLng = LatLng(location.latitude, location.longitude)
                         options.position(latLng)
-                        options.title("Aranan Konum")
+                        options.title("Bulunulan Konum")
+                        options.icon(BitmapDescriptorFactory.fromResource(R.drawable.loc))
                         mMap!!.addMarker(options)
-                        mMap!!.animateCamera(CameraUpdateFactory.newLatLng(latLng))
+                        mMap!!.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10f))
                     }
                 }
             }
@@ -226,13 +222,6 @@ class AddRouteMap : AppCompatActivity(), OnMapReadyCallback {
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return
         }
         fusedLocationProviderClient!!.requestLocationUpdates(
