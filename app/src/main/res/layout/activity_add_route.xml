@@ -6,4 +6,95 @@
     android:layout_height="match_parent"
     tools:context=".AddRoute">
 
+<<<<<<< Updated upstream
+=======
+    <Button
+        android:id="@+id/buttonFrom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="44dp"
+        android:text="Nereden?"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewFrom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="112dp"
+        android:text=""
+        app:layout_constraintEnd_toStartOf="@+id/buttonFrom"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewTo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="128dp"
+        android:layout_marginEnd="72dp"
+        android:text=""
+        app:layout_constraintEnd_toStartOf="@+id/buttonTo"
+        app:layout_constraintHorizontal_bias="0.782"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/buttonTo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="44dp"
+        android:text="Nereye?"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonFrom" />
+
+    <EditText
+        android:id="@+id/maxPerson"
+        android:layout_width="207dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="36dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="En fazla kaç kişi?"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonTo" />
+
+    <CalendarView
+        android:id="@+id/calendarView"
+        android:layout_width="345dp"
+        android:layout_height="301dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginBottom="180dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/maxPerson"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <EditText
+        android:id="@+id/eTtime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="24dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="Saat giriniz..."
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/calendarView" />
+
+    <Button
+        android:id="@+id/butAccept"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="160dp"
+        android:text="Oluştur"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/eTtime" />
+
+
+>>>>>>> Stashed changes
 </androidx.constraintlayout.widget.ConstraintLayout>
