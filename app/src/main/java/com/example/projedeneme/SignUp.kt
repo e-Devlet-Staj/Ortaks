@@ -9,8 +9,7 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import kotlinx.android.synthetic.main.activity_sign_in.*
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_sign_in.button2
 import kotlinx.android.synthetic.main.activity_sign_in.imageView2
 import kotlinx.android.synthetic.main.activity_sign_in.textView7
@@ -24,7 +23,7 @@ class SignUp : AppCompatActivity() {
 
         imageView2.setOnClickListener()
         {
-            val intent = Intent(this, Main::class.java)
+            val intent = Intent(this, Welcome::class.java)
             startActivity(intent)
         }
         textView7.setOnClickListener()
@@ -43,6 +42,21 @@ class SignUp : AppCompatActivity() {
 
     }
     private fun registerNewUser(mail: String, passwd: String) {
+        if(NameText.text.toString().isEmpty()){
+            passwordText.error = "Bu alan boş bırakılamaz"
+            passwordText.requestFocus()
+            return
+        }
+        if(SurnameText.text.toString().isEmpty()){
+            passwordText.error = "Bu alan boş bırakılamaz"
+            passwordText.requestFocus()
+            return
+        }
+        if(PhoneText.text.toString().isEmpty()){
+            passwordText.error = "Bu alan boş bırakılamaz"
+            passwordText.requestFocus()
+            return
+        }
         if(emailText.text.toString().isEmpty()){
             emailText.error = "Bu alan boş bırakılamaz"
             emailText.requestFocus()
@@ -75,13 +89,30 @@ class SignUp : AppCompatActivity() {
                 override fun onComplete(p0: Task<AuthResult>) {
                     if (p0.isSuccessful) {
 
-                        startActivity(Intent(this@SignUp, SignIn::class.java))
-                        Toast.makeText(
-                            this@SignUp,
-                            "Başarılı bir şekilde kaydedildi..."+FirebaseAuth.getInstance().currentUser?.email,
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        FirebaseAuth.getInstance().signOut()
+                        var tempUser=User()
+                        tempUser.username=NameText.text.toString()
+                        tempUser.surname=SurnameText.text.toString()
+                        tempUser.phone=PhoneText.text.toString()
+                        tempUser.rate="0"
+                        tempUser.profilePhoto=""
+                        tempUser.user_id=FirebaseAuth.getInstance().currentUser?.uid
+
+                        FirebaseDatabase.getInstance().reference
+                            .child("user")
+                            .child(FirebaseAuth.getInstance().currentUser?.uid.toString())
+                            .setValue(tempUser).addOnCompleteListener { task->
+                                if (task.isSuccessful){
+                                    Toast.makeText(this@SignUp, "Başarılı bir şekilde kaydedildi..."+FirebaseAuth.getInstance().currentUser?.email, Toast.LENGTH_SHORT).show()
+                                    FirebaseAuth.getInstance().signOut()
+                                    startActivity(Intent(this@SignUp, SignIn::class.java))
+                                }
+                                else
+                                {
+                                    Toast.makeText(this@SignUp, "Olmadı"+FirebaseAuth.getInstance().currentUser?.email, Toast.LENGTH_SHORT).show()
+                                }
+
+                            }
+
                     }
                     else
                         Toast.makeText(

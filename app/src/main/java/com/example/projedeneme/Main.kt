@@ -3,30 +3,22 @@ package com.example.projedeneme
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import kotlinx.android.synthetic.main.activity_sign_in.*
-import kotlinx.android.synthetic.main.activity_sign_in.imageView2
-import kotlinx.android.synthetic.main.activity_sign_up.*
-import kotlinx.android.synthetic.main.main.*
+import kotlinx.android.synthetic.main.activity_main.*
 
 class Main : AppCompatActivity() {
-
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.main)
-
-        button.setOnClickListener()
-        {
-            val intent = Intent(this, SignIn::class.java)
-            startActivity(intent)
+        setContentView(R.layout.activity_main)
+    addImgBut.setOnClickListener(){
+        addRouteAct()
+    }
+        addButText.setOnClickListener(){
+            addRouteAct()
         }
-        textView5.setOnClickListener()
-        {
-            val intent = Intent(this, SignUp::class.java)
-            startActivity(intent)
-        }
+    }
 
-
+    fun addRouteAct() {
+        val intent = Intent(this, AddRoute::class.java)
+        startActivity(intent)
     }
 }

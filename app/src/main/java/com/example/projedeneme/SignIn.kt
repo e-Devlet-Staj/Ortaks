@@ -1,3 +1,4 @@
+
 package com.example.projedeneme
 
 import android.content.Intent
@@ -19,7 +20,7 @@ class SignIn : AppCompatActivity() {
 
         imageView2.setOnClickListener()
         {
-            val intent = Intent(this, Main::class.java)
+            val intent = Intent(this, Welcome::class.java)
             startActivity(intent)
         }
         textView7.setOnClickListener()
@@ -30,28 +31,32 @@ class SignIn : AppCompatActivity() {
 
         button2.setOnClickListener()
         {
-            if(email2Text.text.isNotEmpty() && editTextTextPassword.text.isNotEmpty()){
+            signIn()
+        }
 
-                FirebaseAuth.getInstance().signInWithEmailAndPassword(email2Text.text.toString(),editTextTextPassword.text.toString())
-                    .addOnCompleteListener(object : OnCompleteListener<AuthResult> {
-                        override fun onComplete(p0: Task<AuthResult>) {
-                            if(p0.isSuccessful){
+    }
+    private fun signIn() {
+        if(email2Text.text.isNotEmpty() && editTextTextPassword.text.isNotEmpty()){
 
-                                Toast.makeText( this@SignIn,"Giriş Başarılı"+FirebaseAuth.getInstance().currentUser?.email,Toast.LENGTH_SHORT).show()
-                                var intentMain= Intent(this@SignIn,ViewRequests::class.java)
-                                startActivity(intentMain)
-                            }
-                            else{
+            FirebaseAuth.getInstance().signInWithEmailAndPassword(email2Text.text.toString(),editTextTextPassword.text.toString())
+                .addOnCompleteListener(object : OnCompleteListener<AuthResult> {
+                    override fun onComplete(p0: Task<AuthResult>) {
+                        if(p0.isSuccessful){
 
-                                Toast.makeText( this@SignIn,"Hatalı Giriş..."+p0.exception?.message,Toast.LENGTH_SHORT).show()
-                            }
-
+                            Toast.makeText( this@SignIn,"Giriş Başarılı"+FirebaseAuth.getInstance().currentUser?.email,Toast.LENGTH_SHORT).show()
+                            var intentMain= Intent(this@SignIn,ViewRequests::class.java)
+                            startActivity(intentMain)
                         }
-                    })
-            }
-            else{
-                Toast.makeText( this@SignIn,"Boş Alanları Doldurunuz...", Toast.LENGTH_SHORT).show()
-            }
+                        else{
+
+                            Toast.makeText( this@SignIn,"Hatalı Giriş..."+p0.exception?.message,Toast.LENGTH_SHORT).show()
+                        }
+
+                    }
+                })
+        }
+        else{
+            Toast.makeText( this@SignIn,"Boş Alanları Doldurunuz...", Toast.LENGTH_SHORT).show()
         }
     }
 
