@@ -44,7 +44,7 @@ class SignIn : AppCompatActivity() {
                         if(p0.isSuccessful){
 
                             Toast.makeText( this@SignIn,"Giriş Başarılı"+FirebaseAuth.getInstance().currentUser?.email,Toast.LENGTH_SHORT).show()
-                            var intentMain= Intent(this@SignIn,Main::class.java)
+                            var intentMain= Intent(this@SignIn,ViewRequests::class.java)
                             startActivity(intentMain)
                         }
                         else{

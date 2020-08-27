@@ -10,13 +10,14 @@ import com.google.android.gms.maps.GoogleMap.OnPolylineClickListener
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.activity_maps.*
+import kotlinx.android.synthetic.main.activity_poly.*
 
 val database = Firebase.database
 val latitudeFrom = database.getReference("latitudeFrom")
@@ -35,9 +36,10 @@ class PolyActivity : AppCompatActivity(), OnMapReadyCallback, OnPolylineClickLis
     var lonTo = 3.0
     val myInterface = this
     override fun onCreate(savedInstanceState: Bundle?) {
+
         Log.e("Log", "6  " + latFrom)
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_maps)
+        setContentView(R.layout.activity_poly)
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(this)
@@ -113,7 +115,7 @@ class PolyActivity : AppCompatActivity(), OnMapReadyCallback, OnPolylineClickLis
         when (type) {
             "A" -> {
                 polyline.endCap = CustomCap(
-                    BitmapDescriptorFactory.fromResource(R.drawable.ic_arrow), 10f
+                    BitmapDescriptorFactory.fromResource(R.drawable.ic_arrow), 16f
                 )
             }
         }
@@ -128,6 +130,7 @@ class PolyActivity : AppCompatActivity(), OnMapReadyCallback, OnPolylineClickLis
     private val GAP: PatternItem = Gap(PATTERN_GAP_LENGTH_PX.toFloat())
     private val PATTERN_POLYLINE_DOTTED = listOf(GAP, DOT)
     override fun onPolylineClick(polyline: Polyline) {
+
         if (polyline.pattern == null || !polyline.pattern!!.contains(DOT)) {
             polyline.pattern = PATTERN_POLYLINE_DOTTED
         } else {

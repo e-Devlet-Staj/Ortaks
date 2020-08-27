@@ -34,10 +34,8 @@ import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_add_route.*
 import kotlinx.android.synthetic.main.activity_add_route_map.*
-data class Customer(
-    var uid:String?=""
-    var
-)
+import java.util.*
+
 class AddRouteMap : AppCompatActivity(), OnMapReadyCallback {
 
 
@@ -53,6 +51,8 @@ class AddRouteMap : AppCompatActivity(), OnMapReadyCallback {
     val latitudeTo = database.getReference("latitudeTo")
     val longitudeFrom = database.getReference("longitudeFrom")
     val longitudeTo = database.getReference("longitudeTo")
+    val fromGeo = database.getReference("fromGeo")
+    val toGeo = database.getReference("toGeo")
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -72,26 +72,16 @@ class AddRouteMap : AppCompatActivity(), OnMapReadyCallback {
             if (intent.extras?.getString("status").toString() == "From") {
                 latitudeFrom.setValue(latLng.latitude)
                 longitudeFrom.setValue(latLng.longitude)
+                fromGeo.setValue(getCompleteAddressString(latLng.latitude,latLng.longitude))
             } else if (intent.extras?.getString("status").equals("To")) {
                 latitudeTo.setValue(latLng.latitude)
                 longitudeTo.setValue(latLng.longitude)
+                toGeo.setValue(getCompleteAddressString(latLng.latitude,latLng.longitude))
             }
             startActivity(intent2)
             finish()
         }
-        /*  latitudeFrom.addValueEventListener(object : ValueEventListener {
-              override fun onDataChange(dataSnapshot: DataSnapshot) {
-                  // This method is called once with the initial value and again
-                  // whenever data at this location is updated.
-                  val value = dataSnapshot.getValue<String>()
-              }*/
 
-
-        /*override fun onCancelled(error: DatabaseError) {
-            // Failed to read value
-            Log.w("kral", "Failed to read value.", error.toException())
-        }
-    })*/
     }
 
 
@@ -126,6 +116,7 @@ class AddRouteMap : AppCompatActivity(), OnMapReadyCallback {
                     options.icon(BitmapDescriptorFactory.fromResource(R.drawable.redloc))
                     mMap!!.addMarker(options)
                     mMap!!.animateCamera(CameraUpdateFactory.newLatLng(latLng))
+
                 }
 
             }
@@ -197,6 +188,7 @@ class AddRouteMap : AppCompatActivity(), OnMapReadyCallback {
                         options.title("Bulunulan Konum")
                         options.icon(BitmapDescriptorFactory.fromResource(R.drawable.loc))
                         mMap!!.addMarker(options)
+
                         mMap!!.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10f))
                     }
                 }
@@ -229,7 +221,34 @@ class AddRouteMap : AppCompatActivity(), OnMapReadyCallback {
         )
     }
 
-
+    private fun getCompleteAddressString(LATITUDE:Double, LONGITUDE:Double):String {
+        var strAdd = ""
+        val geocoder = Geocoder(this, Locale.getDefault())
+        try
+        {
+            val addresses = geocoder.getFromLocation(LATITUDE, LONGITUDE, 1)
+            if (addresses != null)
+            {
+                val returnedAddress = addresses.get(0)
+                val strReturnedAddress = StringBuilder("")
+                for (i in 0..returnedAddress.getMaxAddressLineIndex())
+                {
+                    strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n")
+                }
+                strAdd = strReturnedAddress.toString()
+                Log.e("MMYCA", strReturnedAddress.toString())
+            }
+            else
+            {
+                Log.w("MYCMS", "No Address returned!")
+            }
+        }
+        catch (e:Exception) {
+            e.printStackTrace()
+            Log.w("4wterg", "Canont get Address!")
+        }
+        return strAdd
+    }
     private val locationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult) {
 
@@ -237,5 +256,4 @@ class AddRouteMap : AppCompatActivity(), OnMapReadyCallback {
             Log.d("Debug:", "your last last location: " + lastLocation.longitude.toString())
         }
     }
-
 }
