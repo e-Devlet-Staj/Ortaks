@@ -1,11 +1,15 @@
-package com.example.projedeneme
+package com.example.projedeneme.HomeActivity
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.projedeneme.R
+import com.example.projedeneme.RegisterActivity.SignIn
+import com.example.projedeneme.RegisterActivity.SignUp
+
 import kotlinx.android.synthetic.main.activity_welcome.*
 
-class Main : AppCompatActivity() {
+class Welcome : AppCompatActivity() {
 
 
 

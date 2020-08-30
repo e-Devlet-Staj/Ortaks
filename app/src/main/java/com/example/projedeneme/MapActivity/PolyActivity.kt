@@ -1,24 +1,23 @@
-package com.example.projedeneme
+package com.example.projedeneme.MapActivity
 
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.projedeneme.R
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.GoogleMap.OnPolylineClickListener
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
-import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
-import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.activity_poly.*
-import kotlinx.android.synthetic.main.activity_poly.button3
 import kotlinx.android.synthetic.main.activity_selected_request.*
 
 val database = Firebase.database
@@ -31,7 +30,8 @@ interface MyInterface {
     fun onCallback(response: Double)
 }
 
-class PolyActivity : AppCompatActivity(), OnMapReadyCallback, OnPolylineClickListener, MyInterface {
+class PolyActivity : AppCompatActivity(), OnMapReadyCallback, OnPolylineClickListener,
+    MyInterface {
     var latFrom = 3.0
     var lonFrom = 3.0
     var latTo = 3.0
@@ -47,57 +47,43 @@ class PolyActivity : AppCompatActivity(), OnMapReadyCallback, OnPolylineClickLis
         mapFragment?.getMapAsync(this)
         var newIntent = intent
         if (intent!=null){
+
             textView11.text=newIntent.getStringExtra("destination")
             textView13.text=newIntent.getStringExtra("from")
             textView15.text=newIntent.getStringExtra("date")
             textView17.text=newIntent.getStringExtra("time")
 
         }
-        latitudeFrom.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                latFrom = dataSnapshot.getValue<Double>()!!
+        var ref = FirebaseDatabase.getInstance().reference
+        var user= newIntent.getStringExtra("userid")
+
+        var sorgu=ref.child("latlong")
+            .orderByKey()
+            .equalTo(user)
+
+        sorgu.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+
             }
 
+            override fun onDataChange(p0: DataSnapshot) {
+                for (singleSnapshot in p0!!.children){
+                    var tempLatLong=singleSnapshot.getValue(LatLong::class.java)
+                    latFrom=tempLatLong?.latFrom!!.toDouble()
+                    lonFrom=tempLatLong?.longFrom!!.toDouble()
+                    latTo=tempLatLong?.latTo!!.toDouble()
+                    lonTo=tempLatLong?.longTo!!.toDouble()
 
-            override fun onCancelled(error: DatabaseError) {
+                }
+
             }
+
         })
-        longitudeFrom.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                lonFrom = dataSnapshot.getValue<Double>()!!
-
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                // Failed to read value
-            }
-        })
-        Log.e("Log", "2 içi   " + lonFrom)
-        latitudeTo.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                latTo = dataSnapshot.getValue<Double>()!!
-
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-            }
-        })
-        Log.e("Log", "3 içi   " + latTo)
-        longitudeTo.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                lonTo = dataSnapshot.getValue<Double>()!!
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-            }
-        })
-        Log.e("Log", "4 içi   " + lonTo)
-        Log.e("Log", "185  " + latFrom)
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
         Log.e("Log", "5 altı  " + latTo)
-       buttonDraw.setOnClickListener {
+        buttonDraw.setOnClickListener {
             val polyline1 = googleMap.addPolyline(
                 PolylineOptions()
                     .clickable(true)

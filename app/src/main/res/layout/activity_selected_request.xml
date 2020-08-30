@@ -4,76 +4,91 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SelectedRequest">
+    tools:context=".MapActivity.PolyActivity">
 
     <fragment
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="324dp"
-        android:layout_height="335dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginStart="40dp"
-        android:layout_marginBottom="76dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="67dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="60dp"
+        app:layout_constraintBottom_toBottomOf="@+id/button3"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:context=".PolyActivity" />
+        app:layout_constraintTop_toTopOf="@+id/textView17"
+        tools:context=".MapActivity.PolyActivity" />
 
     <ImageView
         android:id="@+id/imageView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_width="105dp"
+        android:layout_height="104dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="41dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView11"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
+        app:srcCompat="@drawable/common_google_signin_btn_icon_dark"
+        tools:srcCompat="@drawable/common_google_signin_btn_icon_dark" />
 
     <TextView
         android:id="@+id/textView10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="56dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="148dp"
+        android:layout_marginEnd="48dp"
         android:fontFamily="@font/anton"
         android:text="Destination"
         android:textColor="@color/colorYellow"
         android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@+id/textView11"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView13"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_width="140dp"
+        android:layout_height="28dp"
 
+        android:layout_marginTop="37dp"
+        android:layout_marginEnd="90dp"
+        android:layout_marginBottom="36dp"
         android:text="TextView"
-        app:layout_constraintStart_toStartOf="@+id/textView11"
-        app:layout_constraintTop_toBottomOf="@+id/textView11" />
+        app:layout_constraintBottom_toBottomOf="@+id/textView14"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView12"
+        app:layout_constraintTop_toTopOf="@+id/textView11" />
 
     <TextView
         android:id="@+id/textView15"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_width="138dp"
+        android:layout_height="31dp"
+        android:layout_marginTop="4dp"
         android:text="TextView"
-        app:layout_constraintStart_toStartOf="@+id/textView13"
+        app:layout_constraintEnd_toEndOf="@+id/map"
+        app:layout_constraintHorizontal_bias="0.72"
+        app:layout_constraintStart_toStartOf="@+id/map"
         app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
     <TextView
         android:id="@+id/textView17"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="84dp"
-        android:layout_marginTop="12dp"
+        android:layout_width="135dp"
+        android:layout_height="29dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="8dp"
         android:text="TextView"
-        app:layout_constraintStart_toEndOf="@+id/textView16"
+        app:layout_constraintStart_toStartOf="@+id/textView15"
         app:layout_constraintTop_toBottomOf="@+id/textView15" />
 
     <TextView
         android:id="@+id/textView16"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="12dp"
         android:fontFamily="@font/anton"
         android:text="Time"
         android:textColor="@color/colorYellow"
@@ -86,59 +101,62 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        android:layout_marginEnd="1dp"
         android:fontFamily="@font/anton"
         android:text="Date"
         android:textColor="@color/colorYellow"
         android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="@+id/textView12"
+        app:layout_constraintStart_toStartOf="@+id/textView12"
         app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
     <TextView
         android:id="@+id/textView12"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="1dp"
+        android:layout_marginStart="56dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="88dp"
         android:fontFamily="@font/anton"
         android:text="From"
         android:textColor="@color/colorYellow"
         android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="@+id/textView10"
+        app:layout_constraintEnd_toStartOf="@+id/textView13"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
     <TextView
         android:id="@+id/textView11"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="149dp"
+        android:layout_height="27dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="90dp"
+        android:layout_marginBottom="7dp"
         android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/textView12"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView10"
         app:layout_constraintTop_toTopOf="@+id/textView10" />
 
     <Button
         android:id="@+id/button3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginBottom="1dp"
         android:background="@drawable/button"
         android:text="Kabul Et "
         android:textColor="@color/colorWhite"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/map"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/buttonDraw"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="123dp"
-        android:layout_marginBottom="23dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/button"
         android:text="Çiz!"
+        android:textColor="@color/colorWhite"
         app:layout_constraintBottom_toBottomOf="@+id/map"
-        app:layout_constraintStart_toStartOf="@+id/map" />
+        app:layout_constraintStart_toStartOf="@+id/button3" />
 </androidx.constraintlayout.widget.ConstraintLayout>

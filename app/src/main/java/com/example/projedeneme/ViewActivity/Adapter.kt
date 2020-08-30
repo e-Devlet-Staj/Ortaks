@@ -1,13 +1,16 @@
-package com.example.projedeneme
+package com.example.projedeneme.ViewActivity
 
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.cardview.widget.CardView
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.example.projedeneme.MapActivity.PolyActivity
+import com.example.projedeneme.R
+import com.example.projedeneme.RequestActivity.Ride
 import kotlinx.android.synthetic.main.ride_line_layout.view.*
+
 
 class Adapter( rideListtemp:List<Ride>) : RecyclerView.Adapter<Adapter.RideViewHolder>(){
     var rideList =rideListtemp
@@ -20,7 +23,9 @@ class Adapter( rideListtemp:List<Ride>) : RecyclerView.Adapter<Adapter.RideViewH
         var inflater= LayoutInflater.from(parent?.context)
         var rideLine=inflater.inflate(R.layout.ride_line_layout,parent,false)
 
-        return RideViewHolder(rideLine)
+        return RideViewHolder(
+            rideLine
+        )
     }
 
 
@@ -54,7 +59,9 @@ class Adapter( rideListtemp:List<Ride>) : RecyclerView.Adapter<Adapter.RideViewH
 
 
             rideLine.setOnClickListener {v ->
-                var intent =Intent(v.context,PolyActivity::class.java)
+                var intent =Intent(v.context,
+                    PolyActivity::class.java)
+                intent.putExtra("userid",CreatedRide.userId)
                 intent.putExtra("destination",CreatedRide.destination)
                 intent.putExtra("from",CreatedRide.from)
                 intent.putExtra("date",CreatedRide.date)

@@ -1,10 +1,13 @@
 
-package com.example.projedeneme
+package com.example.projedeneme.RegisterActivity
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import com.example.projedeneme.HomeActivity.Welcome
+import com.example.projedeneme.R
+import com.example.projedeneme.ViewActivity.ViewRequests
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
@@ -20,7 +23,7 @@ class SignIn : AppCompatActivity() {
 
         imageView2.setOnClickListener()
         {
-            val intent = Intent(this, Main::class.java)
+            val intent = Intent(this, Welcome::class.java)
             startActivity(intent)
         }
         textView7.setOnClickListener()
@@ -44,7 +47,8 @@ class SignIn : AppCompatActivity() {
                         if(p0.isSuccessful){
 
                             Toast.makeText( this@SignIn,"Giriş Başarılı"+FirebaseAuth.getInstance().currentUser?.email,Toast.LENGTH_SHORT).show()
-                            var intentMain= Intent(this@SignIn,MainSc::class.java)
+                            var intentMain= Intent(this@SignIn,
+                                ViewRequests::class.java)
                             startActivity(intentMain)
                         }
                         else{

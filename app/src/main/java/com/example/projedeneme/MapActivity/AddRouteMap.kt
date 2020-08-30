@@ -1,10 +1,9 @@
-package com.example.projedeneme
+package com.example.projedeneme.MapActivity
 
 import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Color
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
@@ -13,9 +12,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Looper
 import android.util.Log
-import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import com.example.projedeneme.R
+import com.example.projedeneme.RequestActivity.AddRoute
 import com.google.android.gms.location.*
 
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -25,21 +25,14 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.gms.maps.model.PolylineOptions
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
-import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.activity_add_route.*
 import kotlinx.android.synthetic.main.activity_add_route_map.*
 import java.util.*
 
 class AddRouteMap : AppCompatActivity(), OnMapReadyCallback {
-
 
     private lateinit var mMap: GoogleMap
     lateinit var fusedLocationProviderClient: FusedLocationProviderClient
@@ -49,18 +42,12 @@ class AddRouteMap : AppCompatActivity(), OnMapReadyCallback {
     val PERMISSION_ID = 1010
     var options = MarkerOptions()
     var latLng = LatLng(2.3, 2.2)
-    val latitudeFrom = database.getReference("latitudeFrom")
-    val latitudeTo = database.getReference("latitudeTo")
-    val longitudeFrom = database.getReference("longitudeFrom")
-    val longitudeTo = database.getReference("longitudeTo")
-    val fromGeo = database.getReference("fromGeo")
-    val toGeo = database.getReference("toGeo")
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_route_map)
+        var newIntent = intent
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -69,34 +56,66 @@ class AddRouteMap : AppCompatActivity(), OnMapReadyCallback {
         Log.d("Debug:", isLocationEnabled().toString())
         RequestPermission()
         getLastLocation()
+
         buttonFinishSelection.setOnClickListener {
-            var intent2 = Intent(this, AddRoute::class.java)
-            var tempLatLong=LatLong()
-            if (intent.extras?.getString("status").toString() == "From") {
-                tempLatLong.latFrom= latLng.latitude.toString()
+            var intent =Intent(this,
+                AddRoute::class.java)
+
+            Toast.makeText(this@AddRouteMap, newIntent.getStringExtra("status"),Toast.LENGTH_SHORT).show()
+            if (newIntent.getStringExtra("status") == "From") {
+                Toast.makeText(this@AddRouteMap, "From",Toast.LENGTH_SHORT).show()
+
+              var tempLatLong= LatLong()
+                tempLatLong.userId= FirebaseAuth.getInstance().currentUser?.uid.toString()
+                tempLatLong.destination= ""
+                tempLatLong.from=getCompleteAddressString(latLng.latitude,latLng.longitude)
+                tempLatLong.latFrom=latLng.latitude.toString()
                 tempLatLong.longFrom=latLng.longitude.toString()
-                tempLatLong.latTo= ""
                 tempLatLong.longTo=""
+                tempLatLong.latTo=""
+
                 FirebaseDatabase.getInstance().reference
                     .child("latlong")
                     .child(FirebaseAuth.getInstance().currentUser?.uid.toString())
                     .setValue(tempLatLong)
-            } else if (intent.extras?.getString("status").equals("To")) {
+
+            } else if (newIntent.getStringExtra("status") == "To") {
+                Toast.makeText(this@AddRouteMap, "From",Toast.LENGTH_SHORT).show()
                 FirebaseDatabase.getInstance().reference
                     .child("latlong")
                     .child(FirebaseAuth.getInstance().currentUser?.uid.toString())
-                    .child("latTo")
-                    .setValue(latLng.latitude.toString())
+                    .child("destination")
+                    .setValue(getCompleteAddressString(latLng.latitude,latLng.longitude))
+
                 FirebaseDatabase.getInstance().reference
                     .child("latlong")
                     .child(FirebaseAuth.getInstance().currentUser?.uid.toString())
                     .child("longTo")
                     .setValue(latLng.longitude.toString())
+
+                FirebaseDatabase.getInstance().reference
+                    .child("latlong")
+                    .child(FirebaseAuth.getInstance().currentUser?.uid.toString())
+                    .child("latTo")
+                    .setValue(latLng.latitude.toString())
+
             }
-            startActivity(intent2)
+            startActivity(intent)
             finish()
         }
+        /*  latitudeFrom.addValueEventListener(object : ValueEventListener {
+              override fun onDataChange(dataSnapshot: DataSnapshot) {
+                  // This method is called once with the initial value and again
+                  // whenever data at this location is updated.
+                  val value = dataSnapshot.getValue<String>()
+              }*/
 
+
+        /*override fun onCancelled(error: DatabaseError) {
+            // Failed to read value
+            Log.w("kral", "Failed to read value.", error.toException())
+        }
+    })*/
     }
 
 
@@ -251,12 +270,7 @@ class AddRouteMap : AppCompatActivity(), OnMapReadyCallback {
                     strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n")
                 }
                 strAdd = strReturnedAddress.toString()
-                if (intent.extras?.getString("status").toString() == "From") {
-                    textViewFrom.setText(strAdd)
-                } else if (intent.extras?.getString("status").equals("To")) {
-                    textViewTo.setText(strAdd)
-                }
-
+                Log.e("MMYCA", strReturnedAddress.toString())
             }
             else
             {
